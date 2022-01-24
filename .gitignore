@@ -1,0 +1,2 @@
+pub/settings_secret.py
+db.sqlite3
