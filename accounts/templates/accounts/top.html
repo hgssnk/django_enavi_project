@@ -1,28 +1,36 @@
-
 {% extends "commons/base.html" %}
 
-{% block title %}メニュー{% endblock %}
-
-{% block styles %}
-nav.menu ul li {
-    list-style-type:none;
-    font-size: 1.1em;
-}
-{% endblock %}
-
-{% block headertitle %}メニュー画面{% endblock %}
+{% block title %}トップページだよん{% endblock %}
 
 {% block content %}
-<nav class="menu">
-  <ul>
-      <li>
-        ｷﾀ━━━━━━(ﾟ∀ﾟ)━━━━━━ !!!!!
-      </li>
-  </ul>
-</nav>
-{% endblock %}
+<div class="d-flex align-items-center justify-content-center">
+{% if user.is_authenticated %}
+<a href="{% url 'logout' %}" class="logout"><button type="button" class="btn btn-outline-secondary">logout</button></a>
+{% else %}
+{% endif %}
+</div>
 
-{% block scripts %}
-<script>
+<canvas id="q"></canvas>
+<script type="text/javascript">
+    var width = q.width = window.innerWidth; // ブラウザ画面の幅
+    var height = q.height = window.innerHeight; // ブラウザ画面の高さ
+    var letters = Array(256).join(1).split('');
+        // Matrix rainで降らせる文字（日本語を入れてもよい）
+    var matrix = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz123456789@#$%^&*()*&^%";
+
+    var draw = function () {
+        q.getContext('2d').fillStyle='rgba(0,0,0,.05)';
+        q.getContext('2d').fillRect(0,0,width,height);
+        q.getContext('2d').fillStyle='#0F0';
+        letters.map(function(y_pos, index){
+    text = Math.floor( Math.random() * 10 );
+    text = matrix[Math.floor(Math.random() * matrix.length)];
+    x_pos = index * 10;
+    q.getContext('2d').fillText(text, x_pos, y_pos);
+    q.getContext('2d').font = "12px 'Monaco'"; // MonacoはMacOS標準搭載のフォントらしい。コメントアウトするとcanvasデフォルトのフォントとなる
+    letters[index] = (y_pos > 0 + Math.random() * 1e4) ? 0 : y_pos + 10;
+    });
+};
+setInterval(draw, 30); // Matrix rainが降ってくる速さ
 </script>
 {% endblock %}
